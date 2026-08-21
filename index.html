@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Projeto ESP32 DevKit V1 com visualização 3D interativa.">
+  <title>ESP32 Lab — Projeto 3D</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-dot"></span>
+      ESP32<span>LAB</span>
+    </a>
+
+    <nav>
+      <a href="#modelo">Modelo 3D</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#recursos">Recursos</a>
+    </nav>
+
+    <a class="github-btn" href="#modelo">VER MODELO 3D ↗</a>
+  </header>
+
+  <main>
+    <section class="hero" id="modelo">
+      <div class="hero-copy">
+        <div class="eyebrow"><span></span> PROJETO DE ELETRÔNICA</div>
+
+        <h1>
+          ESP32<br>
+          <em>em 3D.</em>
+        </h1>
+
+        <p class="intro">
+          Explore o modelo da ESP32 diretamente no navegador.
+          Gire, aproxime e examine a placa em detalhes.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#viewer" class="primary">EXPLORAR MODELO <b>↓</b></a>
+          <a href="#sobre" class="secondary">SOBRE O PROJETO</a>
+        </div>
+
+        <div class="mini-stats">
+          <div><strong>30</strong><span>GPIOs</span></div>
+          <div><strong>240</strong><span>MHz</span></div>
+          <div><strong>Wi-Fi</strong><span>802.11 b/g/n</span></div>
+          <div><strong>BLE</strong><span>Bluetooth 4.2</span></div>
+        </div>
+      </div>
+
+      <div class="hero-model">
+        <div class="glow"></div>
+        <div class="model-card">
+          <div class="model-top">
+            <span>LIVE 3D VIEW</span>
+            <span class="model-status"><i></i> READY</span>
+          </div>
+
+          <div class="sketchfab-frame" id="viewer">
+            <iframe
+              title="NodeMCU ESP32"
+              frameborder="0"
+              allowfullscreen
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              xr-spatial-tracking
+              execution-while-out-of-viewport
+              execution-while-not-rendered
+              web-share
+              src="https://sketchfab.com/models/a09ed2e58a4248ffb1ab5e6597754f18/embed?autostart=1&preload=1&ui_theme=dark&ui_hint=2">
+            </iframe>
+          </div>
+
+          <div class="model-bottom">
+            <span>🖱 Arraste para girar</span>
+            <span>🔍 Scroll para zoom</span>
+            <a
+              href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18"
+              target="_blank"
+              rel="noopener noreferrer">
+              ABRIR NO SKETCHFAB ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section" id="sobre">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow"><span></span> VISÃO GERAL</div>
+          <h2>Uma placa. <em>Muitas possibilidades.</em></h2>
+        </div>
+        <p>
+          O ESP32 combina processamento, conectividade sem fio e uma grande
+          quantidade de interfaces em uma placa compacta.
+        </p>
+      </div>
+
+      <div class="cards" id="recursos">
+        <article class="info-card">
+          <div class="icon">◉</div>
+          <span>01 / PROCESSAMENTO</span>
+          <h3>Dual Core</h3>
+          <p>Microcontrolador ESP32 com arquitetura dual-core e frequência de até 240 MHz.</p>
+        </article>
+
+        <article class="info-card featured">
+          <div class="icon">⌁</div>
+          <span>02 / CONECTIVIDADE</span>
+          <h3>Wi-Fi + Bluetooth</h3>
+          <p>Conectividade sem fio para projetos IoT, automação, sensores e sistemas embarcados.</p>
+        </article>
+
+        <article class="info-card">
+          <div class="icon">⌗</div>
+          <span>03 / HARDWARE</span>
+          <h3>30 pinos</h3>
+          <p>GPIOs, ADC, PWM, SPI, I²C, UART e outras interfaces para conectar seus componentes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="tech" id="sobre">
+      <div class="tech-number">ESP<br><span>32</span></div>
+      <div>
+        <div class="eyebrow"><span></span> SOBRE A VISUALIZAÇÃO</div>
+        <h2>3D real no navegador.</h2>
+        <p>
+          O modelo exibido nesta página é carregado pelo viewer do Sketchfab.
+          O seu site não precisa armazenar o arquivo 3D: o GitHub Pages apenas
+          incorpora o viewer por meio de um iframe.
+        </p>
+      </div>
+      <div class="tech-specs">
+        <div><span>MODELO</span><strong>NodeMCU ESP32</strong></div>
+        <div><span>VIEWER</span><strong>Sketchfab</strong></div>
+        <div><span>HOST</span><strong>GitHub Pages</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>ESP32 LAB · PROJETO ACADÊMICO</div>
+    <div>
+      Modelo 3D:
+      <a href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18"
+         target="_blank" rel="noopener noreferrer">
+        NodeMCU ESP32
+      </a>
+      por
+      <a href="https://sketchfab.com/scb3d" target="_blank" rel="noopener noreferrer">
+        Stichting Consortium Beroepsonderwijs
+      </a>
+      ·
+      <a href="https://sketchfab.com" target="_blank" rel="noopener noreferrer">Sketchfab</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
