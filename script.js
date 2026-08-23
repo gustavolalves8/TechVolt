@@ -268,3 +268,6 @@ renderHistory();
 updateDashboard();
 drawChart();
 requestAnimationFrame(simulationTick);
+
+// Mobile: keep the interactive chart responsive after orientation changes.
+window.addEventListener("orientationchange",()=>setTimeout(drawChart,250));
