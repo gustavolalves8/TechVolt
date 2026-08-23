@@ -1,24 +1,270 @@
-// Pequenas interações da página.
-// O modelo 3D é renderizado pelo viewer incorporado do Sketchfab.
+const $ = (selector) => document.querySelector(selector);
+const RATE = 0.30;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const viewer = document.querySelector(".sketchfab-frame iframe");
+let power = 0;
+let energy = 0;
+let running = true;
+let demo = false;
+let samples = 0;
+let sumPower = 0;
+let peak = 0;
+let history = [];
+let data = Array(60).fill(0);
 
-  viewer.addEventListener("load", () => {
-    document.documentElement.classList.add("viewer-loaded");
+const formatNumber = (value, decimals = 2) =>
+  Number(value).toLocaleString('pt-BR', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
   });
 
-  // Scroll suave para links internos.
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", event => {
-      const id = link.getAttribute("href");
-      if (id === "#") return;
+function setText(selector, value) {
+  const element = $(selector);
+  if (element) element.textContent = value;
+}
 
-      const target = document.querySelector(id);
-      if (target) {
-        event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
+function setPower(value) {
+  power = Math.max(0, Math.min(1000, Number(value) || 0));
+
+  const slider = $('#slider');
+  if (slider) slider.value = Math.round(power / 10) * 10;
+
+  setText('#sliderText', `${Math.round(power)} W`);
+  setText('#percent', `${Math.round(power / 10)}%`);
+  setText('#power', Math.round(power));
+
+  const meter = $('#meter');
+  if (meter) meter.style.width = `${power / 10}%`;
+
+  if (slider) {
+    const percent = power / 10;
+    slider.style.background =
+      `linear-gradient(90deg, #ffd400 0%, #ffd400 ${percent}%, #252525 ${percent}%, #252525 100%)`;
+  }
+}
+
+function updateDashboard() {
+  const bonus = energy * RATE;
+
+  setText('#energy', formatNumber(energy));
+  setText('#bonus', `R$ ${formatNumber(bonus)}`);
+  setText('#avg', samples ? Math.round(sumPower / samples) : 0);
+  setText('#goal', `${Math.min(100, Math.round((energy / 20) * 100))}%`);
+  setText('#sumE', `${formatNumber(energy)} kWh`);
+  setText('#sumB', `R$ ${formatNumber(bonus)}`);
+  setText('#peak', `${Math.round(peak)} W`);
+  setText('#samples', samples);
+}
+
+function renderHistory() {
+  const rows = $('#rows');
+  if (!rows) return;
+
+  rows.innerHTML = history.length
+    ? history.map(item => `
+        <tr>
+          <td>${item.time}</td>
+          <td>${Math.round(item.power)} W</td>
+          <td>${formatNumber(item.energy)} kWh</td>
+          <td>R$ ${formatNumber(item.bonus)}</td>
+        </tr>
+      `).join('')
+    : '<tr><td colspan="4">Nenhuma amostra ainda.</td></tr>';
+}
+
+function drawChart() {
+  const canvas = $('#graph');
+  if (!canvas) return;
+
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+
+  ctx.clearRect(0, 0, width, height);
+
+  // Grade
+  ctx.strokeStyle = 'rgba(255,255,255,.06)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < 5; i++) {
+    const y = i * height / 5;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(width, y);
+    ctx.stroke();
+  }
+
+  const paddingLeft = 45 * ratio;
+  const maxPower = 1000;
+
+  const point = (value, index) => ({
+    x: paddingLeft + index * (width - paddingLeft) / (data.length - 1),
+    y: height - (Math.max(0, value) / maxPower) * (height - 10 * ratio)
   });
-});
+
+  // Área
+  ctx.beginPath();
+  data.forEach((value, index) => {
+    const p = point(value, index);
+    if (index === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  });
+  ctx.lineTo(width, height);
+  ctx.lineTo(paddingLeft, height);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,212,0,.08)';
+  ctx.fill();
+
+  // Linha
+  ctx.beginPath();
+  data.forEach((value, index) => {
+    const p = point(value, index);
+    if (index === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  });
+  ctx.strokeStyle = '#ffd400';
+  ctx.lineWidth = 2 * ratio;
+  ctx.stroke();
+
+  // Ponto atual
+  const last = point(data[data.length - 1], data.length - 1);
+  ctx.beginPath();
+  ctx.arc(last.x, last.y, 4 * ratio, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffd400';
+  ctx.shadowColor = '#ffd400';
+  ctx.shadowBlur = 12 * ratio;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function simulationTick() {
+  if (running) {
+    if (demo) {
+      // Simulação suave da geração, como se viesse do potenciômetro/ESP32.
+      const time = Date.now() / 1000;
+      const wave1 = (Math.sin(time * 1.2) + 1) / 2;
+      const wave2 = (Math.sin(time * 0.43) + 1) / 2;
+      const target = Math.max(20, Math.min(1000, wave1 * 650 + wave2 * 250 + 70));
+      power += (target - power) * 0.12;
+      setPower(power);
+    }
+
+    // W -> kWh. O loop roda aproximadamente a cada frame, por isso usamos
+    // o tempo real decorrido entre frames em vez de assumir 1/60 s.
+    const now = performance.now();
+    const elapsedHours = lastFrameTime ? (now - lastFrameTime) / 3600000 : 0;
+    energy += power * elapsedHours;
+
+    samples++;
+    sumPower += power;
+    peak = Math.max(peak, power);
+
+    data.push(power);
+    data.shift();
+
+    // Registra uma linha no histórico aproximadamente a cada 5 frames.
+    if (samples % 5 === 0) {
+      history.unshift({
+        time: new Date().toLocaleTimeString('pt-BR'),
+        power,
+        energy,
+        bonus: energy * RATE
+      });
+      history = history.slice(0, 18);
+      renderHistory();
+    }
+
+    updateDashboard();
+    drawChart();
+  }
+
+  lastFrameTime = performance.now();
+  requestAnimationFrame(simulationTick);
+}
+
+let lastFrameTime = performance.now();
+
+const slider = $('#slider');
+if (slider) {
+  slider.addEventListener('input', (event) => {
+    demo = false;
+    setText('#mode', 'MANUAL');
+    setPower(event.target.value);
+  });
+}
+
+const demoButton = $('#demo');
+if (demoButton) {
+  demoButton.addEventListener('click', () => {
+    demo = true;
+    running = true;
+    setText('#mode', 'SIMULAÇÃO');
+    setPower(power || 300);
+  });
+}
+
+const heroButton = $('#startHero');
+if (heroButton) {
+  heroButton.addEventListener('click', () => {
+    const dashboard = $('#dashboard');
+    if (dashboard) dashboard.scrollIntoView({ behavior: 'smooth' });
+    demo = true;
+    running = true;
+    setText('#mode', 'SIMULAÇÃO');
+    setPower(power || 300);
+  });
+}
+
+const pauseButton = $('#pause');
+if (pauseButton) {
+  pauseButton.addEventListener('click', () => {
+    running = !running;
+    pauseButton.textContent = running ? 'Ⅱ PAUSAR' : '▶ CONTINUAR';
+    setText('#mode', running ? (demo ? 'SIMULAÇÃO' : 'MANUAL') : 'PAUSADO');
+    lastFrameTime = performance.now();
+  });
+}
+
+const resetButton = $('#reset');
+if (resetButton) {
+  resetButton.addEventListener('click', () => {
+    power = 0;
+    energy = 0;
+    samples = 0;
+    sumPower = 0;
+    peak = 0;
+    history = [];
+    data.fill(0);
+    demo = false;
+    running = true;
+    lastFrameTime = performance.now();
+
+    setPower(0);
+    setText('#mode', 'SIMULAÇÃO');
+    if (pauseButton) pauseButton.textContent = 'Ⅱ PAUSAR';
+    renderHistory();
+    updateDashboard();
+    drawChart();
+  });
+}
+
+const clearButton = $('#clear');
+if (clearButton) {
+  clearButton.addEventListener('click', () => {
+    history = [];
+    renderHistory();
+  });
+}
+
+window.addEventListener('resize', drawChart);
+
+setPower(0);
+renderHistory();
+updateDashboard();
+drawChart();
+requestAnimationFrame(simulationTick);

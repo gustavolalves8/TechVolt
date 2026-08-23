@@ -1,167 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Projeto ESP32 DevKit V1 com visualização 3D interativa.">
-  <title>ESP32 Lab — Projeto 3D</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Tech Volt — monitoramento e simulação de geração de energia com ESP32.">
+<title>Tech Volt | Energia inteligente</title>
+<link rel="icon" type="image/png" href="logo-tech-volt.png">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <header class="topbar">
-    <a class="brand" href="#">
-      <span class="brand-dot"></span>
-      ESP32<span>LAB</span>
-    </a>
-
-    <nav>
-      <a href="#modelo">Modelo 3D</a>
-      <a href="#sobre">Sobre</a>
-      <a href="#recursos">Recursos</a>
-    </nav>
-
-    <a class="github-btn" href="#modelo">VER MODELO 3D ↗</a>
-  </header>
-
-  <main>
-    <section class="hero" id="modelo">
-      <div class="hero-copy">
-        <div class="eyebrow"><span></span> PROJETO DE ELETRÔNICA</div>
-
-        <h1>
-          ESP32<br>
-          <em>em 3D.</em>
-        </h1>
-
-        <p class="intro">
-          Explore o modelo da ESP32 diretamente no navegador.
-          Gire, aproxime e examine a placa em detalhes.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#viewer" class="primary">EXPLORAR MODELO <b>↓</b></a>
-          <a href="#sobre" class="secondary">SOBRE O PROJETO</a>
-        </div>
-
-        <div class="mini-stats">
-          <div><strong>30</strong><span>GPIOs</span></div>
-          <div><strong>240</strong><span>MHz</span></div>
-          <div><strong>Wi-Fi</strong><span>802.11 b/g/n</span></div>
-          <div><strong>BLE</strong><span>Bluetooth 4.2</span></div>
-        </div>
-      </div>
-
-      <div class="hero-model">
-        <div class="glow"></div>
-        <div class="model-card">
-          <div class="model-top">
-            <span>LIVE 3D VIEW</span>
-            <span class="model-status"><i></i> READY</span>
-          </div>
-
-          <div class="sketchfab-frame" id="viewer">
-            <iframe
-              title="NodeMCU ESP32"
-              frameborder="0"
-              allowfullscreen
-              mozallowfullscreen="true"
-              webkitallowfullscreen="true"
-              allow="autoplay; fullscreen; xr-spatial-tracking"
-              xr-spatial-tracking
-              execution-while-out-of-viewport
-              execution-while-not-rendered
-              web-share
-              src="https://sketchfab.com/models/a09ed2e58a4248ffb1ab5e6597754f18/embed?autostart=1&preload=1&ui_theme=dark&ui_hint=2">
-            </iframe>
-          </div>
-
-          <div class="model-bottom">
-            <span>🖱 Arraste para girar</span>
-            <span>🔍 Scroll para zoom</span>
-            <a
-              href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18"
-              target="_blank"
-              rel="noopener noreferrer">
-              ABRIR NO SKETCHFAB ↗
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="info-section" id="sobre">
-      <div class="section-heading">
-        <div>
-          <div class="eyebrow"><span></span> VISÃO GERAL</div>
-          <h2>Uma placa. <em>Muitas possibilidades.</em></h2>
-        </div>
-        <p>
-          O ESP32 combina processamento, conectividade sem fio e uma grande
-          quantidade de interfaces em uma placa compacta.
-        </p>
-      </div>
-
-      <div class="cards" id="recursos">
-        <article class="info-card">
-          <div class="icon">◉</div>
-          <span>01 / PROCESSAMENTO</span>
-          <h3>Dual Core</h3>
-          <p>Microcontrolador ESP32 com arquitetura dual-core e frequência de até 240 MHz.</p>
-        </article>
-
-        <article class="info-card featured">
-          <div class="icon">⌁</div>
-          <span>02 / CONECTIVIDADE</span>
-          <h3>Wi-Fi + Bluetooth</h3>
-          <p>Conectividade sem fio para projetos IoT, automação, sensores e sistemas embarcados.</p>
-        </article>
-
-        <article class="info-card">
-          <div class="icon">⌗</div>
-          <span>03 / HARDWARE</span>
-          <h3>30 pinos</h3>
-          <p>GPIOs, ADC, PWM, SPI, I²C, UART e outras interfaces para conectar seus componentes.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="tech" id="sobre">
-      <div class="tech-number">ESP<br><span>32</span></div>
-      <div>
-        <div class="eyebrow"><span></span> SOBRE A VISUALIZAÇÃO</div>
-        <h2>3D real no navegador.</h2>
-        <p>
-          O modelo exibido nesta página é carregado pelo viewer do Sketchfab.
-          O seu site não precisa armazenar o arquivo 3D: o GitHub Pages apenas
-          incorpora o viewer por meio de um iframe.
-        </p>
-      </div>
-      <div class="tech-specs">
-        <div><span>MODELO</span><strong>NodeMCU ESP32</strong></div>
-        <div><span>VIEWER</span><strong>Sketchfab</strong></div>
-        <div><span>HOST</span><strong>GitHub Pages</strong></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div>ESP32 LAB · PROJETO ACADÊMICO</div>
-    <div>
-      Modelo 3D:
-      <a href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18"
-         target="_blank" rel="noopener noreferrer">
-        NodeMCU ESP32
-      </a>
-      por
-      <a href="https://sketchfab.com/scb3d" target="_blank" rel="noopener noreferrer">
-        Stichting Consortium Beroepsonderwijs
-      </a>
-      ·
-      <a href="https://sketchfab.com" target="_blank" rel="noopener noreferrer">Sketchfab</a>
+<div class="scanline"></div>
+<header class="topbar">
+  <a class="brand" href="#inicio" aria-label="Tech Volt início"><img src="logo-tech-volt.png" alt="Tech Volt"></a>
+  <nav>
+    <a href="#inicio">INÍCIO</a><a href="#dashboard">DASHBOARD</a><a href="#simulacao">SIMULAÇÃO</a><a href="#historico">HISTÓRICO</a><a href="#projeto">PROJETO</a>
+  </nav>
+  <div class="online"><i></i> SISTEMA ONLINE</div>
+</header>
+<main>
+<section class="hero" id="inicio">
+  <div class="hero-copy">
+    <div class="tag">⚡ PROJETO IoT</div>
+    <h1>ENERGIA INTELIGENTE<br>PARA UM FUTURO<br><em>MELHOR.</em></h1>
+    <p>O <b>Tech Volt</b> é uma plataforma que simula a geração de energia através de um ESP32, transforma os dados em indicadores e apresenta tudo em um painel acessível.</p>
+    <div class="actions"><a class="btn primary" href="#dashboard">VER DASHBOARD <b>→</b></a><button class="btn" id="startHero">▶ COMO FUNCIONA</button></div>
+    <div class="quick">
+      <div><span class="qicon">●</span><b>SISTEMA ONLINE</b><small>Dados sendo processados</small></div>
+      <div><span class="qicon">⌁</span><b>ESP32 CONECTADO</b><small>Wokwi Simulation</small></div>
+      <div><span class="qicon">◷</span><b>ATUALIZAÇÃO</b><small>Em tempo real</small></div>
     </div>
-  </footer>
+  </div>
+  <div class="model-wrap">
+    <div class="model-glow"></div>
+    <div class="model">
+      <div class="modeltop"><span>ESP32 · VISUALIZAÇÃO 3D</span><i>● ONLINE</i></div>
+      <iframe title="NodeMCU ESP32" frameborder="0" allowfullscreen allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/a09ed2e58a4248ffb1ab5e6597754f18/embed?autostart=1&preload=1&ui_theme=dark&ui_hint=2"></iframe>
+      <div class="modelbottom"><span>🖱 Girar · 🔍 Zoom</span><a target="_blank" rel="noopener" href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18">ABRIR NO SKETCHFAB ↗</a></div>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<section class="section" id="dashboard">
+  <div class="head"><div><div class="eyebrow">MONITORAMENTO</div><h2>Dashboard <em>em tempo real.</em></h2></div><div class="controls"><button id="demo">▶ SIMULAÇÃO</button><button id="pause">Ⅱ PAUSAR</button><button id="reset">↻ RESETAR</button></div></div>
+  <div class="banner"><span>●</span><b id="mode">SIMULAÇÃO</b> Os valores representam a leitura que poderá vir do ESP32. <strong>Meta: <em id="goal">0%</em></strong></div>
+  <div class="cards">
+    <article class="featured"><span>⚡ POTÊNCIA ATUAL</span><b id="power">0</b><small>W</small><div class="meter"><i id="meter"></i></div><p>Escala simulada: 0–1000 W</p></article>
+    <article><span>▣ ENERGIA GERADA</span><b id="energy">0,00</b><small>kWh</small><p>Acumulado da sessão</p></article>
+    <article><span>◉ BÔNUS ACUMULADO</span><b id="bonus">R$ 0,00</b><p>R$ 0,30 por kWh</p></article>
+    <article><span>⌁ POTÊNCIA MÉDIA</span><b id="avg">0</b><small>W</small><p>Média da sessão</p></article>
+  </div>
+  <div class="chart"><div class="charthead"><div><span>HISTÓRICO AO VIVO</span><h3>Potência gerada</h3></div><b>━ WATTS</b></div><canvas id="graph"></canvas><div class="axis"><span>60s atrás</span><span>30s</span><span>AGORA</span></div></div>
+</section>
+
+<section class="section" id="simulacao">
+  <div class="head"><div><div class="eyebrow">CONTROLE DA DEMONSTRAÇÃO</div><h2>Simule a <em>geração.</em></h2></div><strong class="percent" id="percent">0%</strong></div>
+  <div class="slider"><div class="range-labels"><span>0 W</span><input id="slider" type="range" min="0" max="1000" value="0"><span>1000 W</span></div><div class="slider-value" id="sliderText">0 W</div><p>Use este controle para representar o potenciômetro do ESP32 no Wokwi.</p></div>
+</section>
+
+<section class="section" id="historico">
+  <div class="head"><div><div class="eyebrow">DADOS DA SESSÃO</div><h2>Histórico de <em>geração.</em></h2></div><button class="btn" id="clear">LIMPAR HISTÓRICO</button></div>
+  <div class="history"><div class="table"><table><thead><tr><th>HORÁRIO</th><th>POTÊNCIA</th><th>ENERGIA</th><th>BÔNUS</th></tr></thead><tbody id="rows"><tr><td colspan="4">Nenhuma amostra ainda.</td></tr></tbody></table></div><aside><span>RESUMO GERAL</span><p>Energia total <b id="sumE">0,00 kWh</b></p><p>Bônus total <b id="sumB">R$ 0,00</b></p><p>Pico de potência <b id="peak">0 W</b></p><p>Amostras coletadas <b id="samples">0</b></p></aside></div>
+</section>
+
+<section class="section" id="projeto">
+  <div class="head"><div><div class="eyebrow">COMO FUNCIONA</div><h2>Do ESP32 ao <em>dashboard.</em></h2></div><p>O potenciômetro no Wokwi representa a intensidade da geração. O ESP32 interpreta a leitura e o Tech Volt transforma o dado em informação visual.</p></div>
+  <div class="flow"><article><b>01</b><span>◉</span><h3>POTENCIÔMETRO</h3><p>Gera uma leitura analógica variável para representar a intensidade da geração.</p></article><i>→</i><article><b>02</b><span>▣</span><h3>ESP32</h3><p>Interpreta a leitura e transforma o valor em potência simulada.</p></article><i>→</i><article><b>03</b><span>⌁</span><h3>COMUNICAÇÃO</h3><p>Os dados podem ser enviados por Wi‑Fi para uma API ou servidor.</p></article><i>→</i><article><b>04</b><span>↗</span><h3>TECH VOLT</h3><p>Apresenta potência, energia, histórico e bônus em uma interface acessível.</p></article></div>
+</section>
+</main>
+<footer><img src="logo-tech-volt.png" alt="Tech Volt"><span>FEIRA DE CIÊNCIAS · MONITORAMENTO E SIMULAÇÃO DE ENERGIA</span></footer>
+<script src="script.js"></script>
 </body>
 </html>
