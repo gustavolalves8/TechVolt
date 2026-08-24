@@ -22,6 +22,20 @@ function setText(selector, value) {
   if (element) element.textContent = value;
 }
 
+
+function updateSolarScene(){
+  const pct=Math.max(0,Math.min(100,power/10));
+  const sun=$('#sun'), panel=$('#solarPanel'), flow=$('#energyFlow'), scenePower=$('#scenePower'), scenePercent=$('#scenePercent'), status=$('#sceneStatus');
+  if(scenePower) scenePower.textContent=`${Math.round(power)} W`;
+  if(scenePercent) scenePercent.textContent=`${Math.round(pct)}%`;
+  if(status) status.textContent=power>700?'Geração alta':power>250?'Geração ativa':'Aguardando geração';
+  if(sun) sun.style.filter=`brightness(${0.7+pct/220})`;
+  if(sun) sun.style.opacity=String(.55+pct/220);
+  if(panel) panel.style.boxShadow=`0 20px 45px rgba(0,0,0,.7),0 0 ${8+pct/2}px rgba(255,212,0,${.03+pct/3500})`;
+  if(flow) flow.style.opacity=String(.25+pct/120);
+  document.documentElement.style.setProperty('--solar-speed', `${Math.max(.45,2.1-pct/70)}s`);
+}
+
 function setPower(value) {
   power = Math.max(0, Math.min(1000, Number(value) || 0));
 
@@ -34,6 +48,8 @@ function setPower(value) {
 
   const meter = $('#meter');
   if (meter) meter.style.width = `${power / 10}%`;
+
+  updateSolarScene();
 
   if (slider) {
     const percent = power / 10;

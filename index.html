@@ -30,12 +30,27 @@
       <div><span class="qicon">◷</span><b>ATUALIZAÇÃO</b><small>Em tempo real</small></div>
     </div>
   </div>
-  <div class="model-wrap">
-    <div class="model-glow"></div>
-    <div class="model">
-      <div class="modeltop"><span>ESP32 · VISUALIZAÇÃO 3D</span><i>● ONLINE</i></div>
-      <iframe title="NodeMCU ESP32" frameborder="0" allowfullscreen allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/a09ed2e58a4248ffb1ab5e6597754f18/embed?autostart=1&preload=1&ui_theme=dark&ui_hint=2"></iframe>
-      <div class="modelbottom"><span>🖱 Girar · 🔍 Zoom</span><a target="_blank" rel="noopener" href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18">ABRIR NO SKETCHFAB ↗</a></div>
+  <div class="solar-wrap">
+    <div class="solar-card">
+      <div class="solar-top"><span>SIMULAÇÃO · GERAÇÃO SOLAR</span><i><b></b> ATIVA</i></div>
+      <div class="solar-scene" id="solarScene" aria-label="Simulador visual de geração de energia solar">
+        <div class="sun" id="sun"><span></span></div>
+        <div class="ray-field" id="rayField">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="solar-panel" id="solarPanel">
+          <div class="panel-grid"></div><div class="panel-gloss"></div>
+          <span class="panel-label">PLACA SOLAR</span>
+        </div>
+        <div class="wire wire-a"></div><div class="wire wire-b"></div>
+        <div class="energy-flow" id="energyFlow"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="esp32-box" id="esp32Box">
+          <div class="esp32-chip"><b>ESP</b><strong>32</strong></div>
+          <span>ESP32</span><em></em>
+        </div>
+        <div class="scene-readout"><small>GERAÇÃO ATUAL</small><strong id="scenePower">0 W</strong><span id="sceneStatus">Aguardando geração</span></div>
+      </div>
+      <div class="solar-bottom"><span>☀ intensidade solar: <b id="scenePercent">0%</b></span><span>⚡ fluxo de energia ativo</span></div>
     </div>
   </div>
 </section>
