@@ -1,88 +1,53 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Tech Volt — monitoramento e simulação de geração de energia com ESP32.">
-<title>Tech Volt | Energia inteligente</title>
-<link rel="icon" type="image/png" href="logo-tech-volt.png">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="scanline"></div>
-<header class="topbar">
-  <a class="brand" href="#inicio" aria-label="Tech Volt início"><img src="logo-tech-volt.png" alt="Tech Volt"></a>
-  <nav>
-    <a href="#inicio">INÍCIO</a><a href="#dashboard">DASHBOARD</a><a href="#simulacao">SIMULAÇÃO</a><a href="#historico">HISTÓRICO</a><a href="#projeto">PROJETO</a>
-  </nav>
-  <div class="online"><i></i> SISTEMA ONLINE</div>
-</header>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Tech Volt — plataforma de monitoramento e simulação de geração de energia solar com ESP32. Projeto de feira de ciências."><title>Tech Volt | Energia inteligente</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="topbar"><a class="brand" href="#inicio"><svg class="brand-logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 24 L60 24 L52 34 L38 34 L38 88 L26 88 L26 34 L8 34 Z" fill="#f4f6f4"/><path d="M40 24 L92 24 L60 88 L44 88 L64 46 L46 46 Z" fill="var(--volt)"/></svg>TECH <b>VOLT</b></a><nav><a href="#inicio">Início</a><a href="#dashboard">Dashboard</a><a href="#simulacao">Simulação</a><a href="#historico">Histórico</a><a href="#projeto">Projeto</a></nav><span class="online"><i class="status-dot"></i>SIMULAÇÃO ATIVA</span></header>
 <main>
-<section class="hero" id="inicio">
-  <div class="hero-copy">
-    <div class="tag">⚡ PROJETO IoT</div>
-    <h1>ENERGIA INTELIGENTE<br>PARA UM FUTURO<br><em>MELHOR.</em></h1>
-    <p>O <b>Tech Volt</b> é uma plataforma que simula a geração de energia através de um ESP32, transforma os dados em indicadores e apresenta tudo em um painel acessível.</p>
-    <div class="actions"><a class="btn primary" href="#dashboard">VER DASHBOARD <b>→</b></a><button class="btn" id="startHero">▶ COMO FUNCIONA</button></div>
-    <div class="quick">
-      <div><span class="qicon">●</span><b>SISTEMA ONLINE</b><small>Dados sendo processados</small></div>
-      <div><span class="qicon">⌁</span><b>ESP32 CONECTADO</b><small>Wokwi Simulation</small></div>
-      <div><span class="qicon">◷</span><b>ATUALIZAÇÃO</b><small>Em tempo real</small></div>
-    </div>
+<section class="hero" id="inicio"><div><small>FEIRA DE CIÊNCIAS · IoT</small><h1>Energia que<br><em>gera futuro.</em></h1><p>Uma plataforma para visualizar e acompanhar a geração de energia simulada por um ESP32.</p><div class="actions"><a class="btn" href="#dashboard">ABRIR DASHBOARD ↓</a><button id="startHero">▶ INICIAR DEMONSTRAÇÃO</button></div><div class="quick"><div><b id="heroPower">0 W</b><span>POTÊNCIA</span></div><div><b id="heroEnergy">0,00 kWh</b><span>ENERGIA</span></div><div><b id="heroBonus">R$ 0,00</b><span>BÔNUS</span></div></div></div>
+<div class="model"><div class="modeltop">ESP32 · 3D VIEW <i class="status-inline"><i class="status-dot"></i>ONLINE</i></div><iframe title="NodeMCU ESP32" frameborder="0" allowfullscreen allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/a09ed2e58a4248ffb1ab5e6597754f18/embed?autostart=1&preload=1&ui_theme=dark&ui_hint=2"></iframe><div class="modelbottom">Girar · Zoom <a target="_blank" rel="noopener" href="https://sketchfab.com/3d-models/nodemcu-esp32-a09ed2e58a4248ffb1ab5e6597754f18">ABRIR NO SKETCHFAB →</a></div></div></section>
+
+<section class="section visual-section" id="simulacao">
+  <div class="head">
+    <div><small>SIMULAÇÃO VISUAL</small><h2>Energia <em>em movimento.</em></h2></div>
+    <p>Uma representação simples do fluxo: luz solar → painel → cabo → ESP32.</p>
   </div>
-  <div class="solar-wrap">
-    <div class="solar-card">
-      <div class="solar-top"><span>SIMULAÇÃO · GERAÇÃO SOLAR</span><i><b></b> ATIVA</i></div>
-      <div class="solar-scene" id="solarScene" aria-label="Simulador visual de geração de energia solar">
-        <div class="sun" id="sun"><span></span></div>
-        <div class="ray-field" id="rayField">
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  <div class="solar-card" id="solarCard">
+    <div class="solar-card-top"><span>SIMULADOR SOLAR</span><b id="visualState">AGUARDANDO</b></div>
+    <div class="solar-stage" id="solarStage">
+      <div class="sun-art" id="sunArt"><div class="sun-core"></div></div>
+      <div class="sun-glow"></div>
+      <svg class="solar-rays" id="solarRays" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="rayGrad" x1="0" x2="1"><stop offset="0" stop-color="#ffd400" stop-opacity=".15"/><stop offset=".48" stop-color="#ffd400" stop-opacity=".9"/><stop offset="1" stop-color="#fff0a0" stop-opacity=".2"/></linearGradient>
+          <filter id="rayGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <g class="ray-lines" filter="url(#rayGlow)">
+          <path style="--i:0" d="M150 150 L500 235"/><path style="--i:1" d="M150 168 L505 245"/><path style="--i:2" d="M150 186 L510 255"/>
+          <path style="--i:3" d="M150 204 L515 265"/><path style="--i:4" d="M150 222 L520 275"/><path style="--i:5" d="M150 240 L525 285"/>
+        </g>
+        <g class="ray-particles">
+          <circle style="--i:0;--dx:300px;--dy:66px" cx="215" cy="168" r="3"/><circle style="--i:2;--dx:230px;--dy:50px" cx="295" cy="205" r="2.5"/>
+          <circle style="--i:4;--dx:200px;--dy:40px" cx="335" cy="235" r="2.8"/><circle style="--i:1;--dx:260px;--dy:30px" cx="255" cy="255" r="2.4"/>
+        </g>
+      </svg>
+      <div class="sun-power-ring" id="sunPowerRing"></div>
+      <div class="panel-ground"></div>
+      <div class="panel-art" id="panelArt">
+        <div class="panel-face"><div class="cell-grid"></div><span>PLACA SOLAR</span>
+          <div class="panel-screw tl"></div><div class="panel-screw tr"></div><div class="panel-screw bl"></div><div class="panel-screw br"></div>
         </div>
-        <div class="solar-panel" id="solarPanel">
-          <div class="panel-grid"></div><div class="panel-gloss"></div>
-          <span class="panel-label">PLACA SOLAR</span>
-        </div>
-        <div class="wire wire-a"></div><div class="wire wire-b"></div>
-        <div class="energy-flow" id="energyFlow"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="esp32-box" id="esp32Box">
-          <div class="esp32-chip"><b>ESP</b><strong>32</strong></div>
-          <span>ESP32</span><em></em>
-        </div>
-        <div class="scene-readout"><small>GERAÇÃO ATUAL</small><strong id="scenePower">0 W</strong><span id="sceneStatus">Aguardando geração</span></div>
+        <div class="panel-junction"></div>
+        <div class="panel-leg leg-a"></div><div class="panel-leg leg-b"></div><div class="panel-foot"></div>
       </div>
-      <div class="solar-bottom"><span>☀ intensidade solar: <b id="scenePercent">0%</b></span><span>⚡ fluxo de energia ativo</span></div>
+      <div class="power-cable" id="powerCable"><span class="cable-line"></span><div class="energy-bolts"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="esp-art" id="espArt"><span class="esp-label">ESP32</span><div class="board"><div class="pins left"></div><div class="pins right"></div><div class="shield"><div class="shield-vents"></div><span>ESP32<br>WROOM-32</span><div class="antenna"></div></div><div class="chip"></div><div class="vreg"></div><div class="osc"></div><div class="usb"></div><div class="pinbtn pinbtn-en"></div><div class="pinbtn pinbtn-boot"></div><div class="led"></div><div class="res r1"></div><div class="res r2"></div></div></div>
+      <div class="visual-readout"><small>GERAÇÃO ATUAL</small><strong id="visualPower">0 W</strong><span id="visualHint">Inicie a simulação para gerar energia</span></div>
     </div>
+    <div class="solar-legend"><span><i class="dot solar-dot"></i> LUZ SOLAR</span><span><i class="dot energy-dot"></i> FLUXO DE ENERGIA</span><span>ESCALA <b>0–1000 W</b></span></div>
   </div>
 </section>
-
-<section class="section" id="dashboard">
-  <div class="head"><div><div class="eyebrow">MONITORAMENTO</div><h2>Dashboard <em>em tempo real.</em></h2></div><div class="controls"><button id="demo">▶ SIMULAÇÃO</button><button id="pause">Ⅱ PAUSAR</button><button id="reset">↻ RESETAR</button></div></div>
-  <div class="banner"><span>●</span><b id="mode">SIMULAÇÃO</b> Os valores representam a leitura que poderá vir do ESP32. <strong>Meta: <em id="goal">0%</em></strong></div>
-  <div class="cards">
-    <article class="featured"><span>⚡ POTÊNCIA ATUAL</span><b id="power">0</b><small>W</small><div class="meter"><i id="meter"></i></div><p>Escala simulada: 0–1000 W</p></article>
-    <article><span>▣ ENERGIA GERADA</span><b id="energy">0,00</b><small>kWh</small><p>Acumulado da sessão</p></article>
-    <article><span>◉ BÔNUS ACUMULADO</span><b id="bonus">R$ 0,00</b><p>R$ 0,30 por kWh</p></article>
-    <article><span>⌁ POTÊNCIA MÉDIA</span><b id="avg">0</b><small>W</small><p>Média da sessão</p></article>
-  </div>
-  <div class="chart"><div class="charthead"><div><span>HISTÓRICO AO VIVO</span><h3>Potência gerada</h3></div><b>━ WATTS</b></div><canvas id="graph"></canvas><div class="axis"><span>60s atrás</span><span>30s</span><span>AGORA</span></div></div>
-</section>
-
-<section class="section" id="simulacao">
-  <div class="head"><div><div class="eyebrow">CONTROLE DA DEMONSTRAÇÃO</div><h2>Simule a <em>geração.</em></h2></div><strong class="percent" id="percent">0%</strong></div>
-  <div class="slider"><div class="range-labels"><span>0 W</span><input id="slider" type="range" min="0" max="1000" value="0"><span>1000 W</span></div><div class="slider-value" id="sliderText">0 W</div><p>Use este controle para representar o potenciômetro do ESP32 no Wokwi.</p></div>
-</section>
-
-<section class="section" id="historico">
-  <div class="head"><div><div class="eyebrow">DADOS DA SESSÃO</div><h2>Histórico de <em>geração.</em></h2></div><button class="btn" id="clear">LIMPAR HISTÓRICO</button></div>
-  <div class="history"><div class="table"><table><thead><tr><th>HORÁRIO</th><th>POTÊNCIA</th><th>ENERGIA</th><th>BÔNUS</th></tr></thead><tbody id="rows"><tr><td colspan="4">Nenhuma amostra ainda.</td></tr></tbody></table></div><aside><span>RESUMO GERAL</span><p>Energia total <b id="sumE">0,00 kWh</b></p><p>Bônus total <b id="sumB">R$ 0,00</b></p><p>Pico de potência <b id="peak">0 W</b></p><p>Amostras coletadas <b id="samples">0</b></p></aside></div>
-</section>
-
-<section class="section" id="projeto">
-  <div class="head"><div><div class="eyebrow">COMO FUNCIONA</div><h2>Do ESP32 ao <em>dashboard.</em></h2></div><p>O potenciômetro no Wokwi representa a intensidade da geração. O ESP32 interpreta a leitura e o Tech Volt transforma o dado em informação visual.</p></div>
-  <div class="flow"><article><b>01</b><span>◉</span><h3>POTENCIÔMETRO</h3><p>Gera uma leitura analógica variável para representar a intensidade da geração.</p></article><i>→</i><article><b>02</b><span>▣</span><h3>ESP32</h3><p>Interpreta a leitura e transforma o valor em potência simulada.</p></article><i>→</i><article><b>03</b><span>⌁</span><h3>COMUNICAÇÃO</h3><p>Os dados podem ser enviados por Wi‑Fi para uma API ou servidor.</p></article><i>→</i><article><b>04</b><span>↗</span><h3>TECH VOLT</h3><p>Apresenta potência, energia, histórico e bônus em uma interface acessível.</p></article></div>
-</section>
-</main>
-<footer><img src="logo-tech-volt.png" alt="Tech Volt"><span>FEIRA DE CIÊNCIAS · MONITORAMENTO E SIMULAÇÃO DE ENERGIA</span></footer>
-<script src="script.js"></script>
-</body>
-</html>
+<section class="section" id="dashboard"><div class="head"><div><small>MONITORAMENTO</small><h2>Dashboard <em>em tempo real.</em></h2></div><div class="controls"><button id="demo">Simulação</button><button id="pause">Pausar</button><button id="reset">Resetar</button></div></div><div class="banner"><i class="status-dot"></i> <b id="mode">SIMULAÇÃO</b> Os valores representam a leitura que poderá vir do ESP32. <strong>Meta: <span id="goal">0%</span></strong></div>
+<div class="cards"><article><span>POTÊNCIA ATUAL</span><b id="power">0</b><small>W</small><div class="meter"><i id="meter"></i></div><p>Escala simulada: 0–1000 W</p></article><article><span>ENERGIA GERADA</span><b id="energy">0,00</b><small>kWh</small><p>Acumulado da sessão</p></article><article><span>BÔNUS</span><b id="bonus">R$ 0,00</b><p>R$ 0,30 por kWh</p></article><article><span>POTÊNCIA MÉDIA</span><b id="avg">0</b><small>W</small><p>Média da sessão</p></article></div>
+<div class="chart"><div class="charthead"><div><span>HISTÓRICO AO VIVO</span><h3>Potência gerada</h3></div><b>WATTS</b></div><canvas id="graph"></canvas></div></section>
+<section class="section" id="simulacao-controle"><div class="head"><div><small>CONTROLE DA DEMONSTRAÇÃO</small><h2>Simule a <em>geração.</em></h2></div><strong class="percent" id="percent">0%</strong></div><div class="slider"><div><span>0 W</span><input id="slider" type="range" min="0" max="1000" value="0"><span>1000 W</span></div><strong id="sliderText">0 W</strong><p>Use este controle para representar o potenciômetro do ESP32 no Wokwi.</p></div></section>
+<section class="section" id="historico"><div class="head"><div><small>DADOS DA SESSÃO</small><h2>Histórico de <em>geração.</em></h2></div><button id="clear">Limpar histórico</button></div><div class="history"><div class="table"><table><thead><tr><th>HORÁRIO</th><th>POTÊNCIA</th><th>ENERGIA</th><th>BÔNUS</th></tr></thead><tbody id="rows"><tr><td colspan="4">Nenhuma amostra ainda.</td></tr></tbody></table></div><aside><span>RESUMO</span><p>Total <b id="sumE">0,00 kWh</b></p><p>Bônus <b id="sumB">R$ 0,00</b></p><p>Pico <b id="peak">0 W</b></p><p>Amostras <b id="samples">0</b></p></aside></div></section>
+<section class="section" id="projeto"><div class="head"><div><small>COMO FUNCIONA</small><h2>Do ESP32 ao <em>dashboard.</em></h2></div><p>O potenciômetro no Wokwi representa a intensidade da geração. O ESP32 interpreta a leitura e o site apresenta os resultados.</p></div><div class="flow"><article><b>01</b><h3>Potenciômetro</h3><p>Gera uma leitura analógica variável.</p></article><i>→</i><article><b>02</b><h3>ESP32</h3><p>Transforma a leitura em potência simulada.</p></article><i>→</i><article><b>03</b><h3>Comunicação</h3><p>Os dados podem ser enviados por Wi‑Fi para uma API.</p></article><i>→</i><article><b>04</b><h3>Tech Volt</h3><p>Exibe potência, energia, histórico e bônus.</p></article></div></section>
+</main><footer><span class="brand-mini">TECH VOLT · FEIRA DE CIÊNCIAS</span><span>Projeto de monitoramento e simulação de energia</span></footer><script src="script.js"></script></body></html>
