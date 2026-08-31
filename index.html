@@ -7,41 +7,111 @@
 <section class="section visual-section" id="simulacao">
   <div class="head">
     <div><small>SIMULAÇÃO VISUAL</small><h2>Energia <em>em movimento.</em></h2></div>
-    <p>Uma representação simples do fluxo: luz solar → painel → cabo → ESP32.</p>
+    <p>Escolha a fonte de geração e veja o fluxo: geração → cabo → ESP32.</p>
   </div>
   <div class="solar-card" id="solarCard">
-    <div class="solar-card-top"><span>SIMULADOR SOLAR</span><b id="visualState">AGUARDANDO</b></div>
+    <div class="solar-card-top"><span id="stageLabel">SIMULADOR SOLAR</span><b id="visualState">AGUARDANDO</b></div>
+    <div class="source-tabs" id="sourceTabs">
+      <button class="stab active" data-source="solar">Solar</button>
+      <button class="stab" data-source="hydro">Hidrelétrica</button>
+      <button class="stab" data-source="wind">Eólica</button>
+    </div>
     <div class="solar-stage" id="solarStage">
-      <div class="sun-art" id="sunArt"><div class="sun-core"></div></div>
-      <div class="sun-glow"></div>
-      <svg class="solar-rays" id="solarRays" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="rayGrad" x1="0" x2="1"><stop offset="0" stop-color="#ffd400" stop-opacity=".15"/><stop offset=".48" stop-color="#ffd400" stop-opacity=".9"/><stop offset="1" stop-color="#fff0a0" stop-opacity=".2"/></linearGradient>
-          <filter id="rayGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <g class="ray-lines" filter="url(#rayGlow)">
-          <path style="--i:0" d="M150 150 L500 235"/><path style="--i:1" d="M150 168 L505 245"/><path style="--i:2" d="M150 186 L510 255"/>
-          <path style="--i:3" d="M150 204 L515 265"/><path style="--i:4" d="M150 222 L520 275"/><path style="--i:5" d="M150 240 L525 285"/>
-        </g>
-        <g class="ray-particles">
-          <circle style="--i:0;--dx:300px;--dy:66px" cx="215" cy="168" r="3"/><circle style="--i:2;--dx:230px;--dy:50px" cx="295" cy="205" r="2.5"/>
-          <circle style="--i:4;--dx:200px;--dy:40px" cx="335" cy="235" r="2.8"/><circle style="--i:1;--dx:260px;--dy:30px" cx="255" cy="255" r="2.4"/>
-        </g>
-      </svg>
-      <div class="sun-power-ring" id="sunPowerRing"></div>
-      <div class="panel-ground"></div>
-      <div class="panel-art" id="panelArt">
-        <div class="panel-face"><div class="cell-grid"></div><span>PLACA SOLAR</span>
-          <div class="panel-screw tl"></div><div class="panel-screw tr"></div><div class="panel-screw bl"></div><div class="panel-screw br"></div>
-        </div>
-        <div class="panel-junction"></div>
+
+      <div class="scene scene-solar" id="sceneSolar">
+        <div class="sun-art" id="sunArt"><div class="sun-core"></div></div>
+        <div class="sun-glow"></div>
+        <svg class="solar-rays" id="solarRays" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="rayGrad" x1="0" x2="1"><stop offset="0" stop-color="#ffd400" stop-opacity=".15"/><stop offset=".48" stop-color="#ffd400" stop-opacity=".9"/><stop offset="1" stop-color="#fff0a0" stop-opacity=".2"/></linearGradient>
+            <filter id="rayGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <g class="ray-lines" filter="url(#rayGlow)">
+            <path style="--i:0" d="M150 150 L500 235"/><path style="--i:1" d="M150 168 L505 245"/><path style="--i:2" d="M150 186 L510 255"/>
+            <path style="--i:3" d="M150 204 L515 265"/><path style="--i:4" d="M150 222 L520 275"/><path style="--i:5" d="M150 240 L525 285"/>
+          </g>
+          <g class="ray-particles">
+            <circle style="--i:0;--dx:300px;--dy:66px" cx="215" cy="168" r="3"/><circle style="--i:2;--dx:230px;--dy:50px" cx="295" cy="205" r="2.5"/>
+            <circle style="--i:4;--dx:200px;--dy:40px" cx="335" cy="235" r="2.8"/><circle style="--i:1;--dx:260px;--dy:30px" cx="255" cy="255" r="2.4"/>
+          </g>
+        </svg>
+        <div class="sun-power-ring" id="sunPowerRing"></div>
+        <div class="panel-ground"></div>
         <div class="panel-leg leg-a"></div><div class="panel-leg leg-b"></div><div class="panel-foot"></div>
+        <div class="panel-art" id="panelArt">
+          <div class="panel-face"><div class="cell-grid"></div><span>PLACA SOLAR</span>
+            <div class="panel-screw tl"></div><div class="panel-screw tr"></div><div class="panel-screw bl"></div><div class="panel-screw br"></div>
+          </div>
+          <div class="panel-junction"></div>
+        </div>
+        <div class="weather-fx" id="weatherFx">
+          <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+          <div class="rain r1"></div><div class="rain r2"></div><div class="rain-mist"></div>
+        </div>
       </div>
+
+      <div class="scene scene-hydro" id="sceneHydro" hidden>
+        <div class="reservoir"><div class="reservoir-waves"></div><div class="reservoir-shine"></div></div>
+        <div class="dam-wall"><div class="dam-lines"></div><div class="dam-gate"></div></div>
+        <div class="penstock"><div class="penstock-rings"></div><div class="water-flow"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i></div></div>
+        <div class="turbine-ground"></div>
+        <div class="turbine-house">
+          <div class="turbine-wheel" id="turbineWheel">
+            <div class="turbine-blade" style="--i:0"></div><div class="turbine-blade" style="--i:1"></div><div class="turbine-blade" style="--i:2"></div>
+            <div class="turbine-blade" style="--i:3"></div><div class="turbine-blade" style="--i:4"></div><div class="turbine-blade" style="--i:5"></div>
+          </div>
+          <div class="turbine-hub"></div>
+        </div>
+        <div class="water-splash"><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="scene scene-wind" id="sceneWind" hidden>
+        <div class="wind-lines">
+          <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i>
+        </div>
+        <div class="turbine-ground2"></div>
+        <div class="wind-tower">
+          <div class="wind-nacelle"></div>
+          <div class="wind-hub" id="windHub">
+            <div class="wind-blade" style="--i:0"></div><div class="wind-blade" style="--i:1"></div><div class="wind-blade" style="--i:2"></div>
+          </div>
+        </div>
+        <div class="wind-junction"></div>
+        <div class="wind-riser"></div>
+        <div class="wind-link"></div>
+      </div>
+
       <div class="power-cable" id="powerCable"><span class="cable-line"></span><div class="energy-bolts"><i></i><i></i><i></i><i></i><i></i></div></div>
       <div class="esp-art" id="espArt"><span class="esp-label">ESP32</span><div class="board"><div class="pins left"></div><div class="pins right"></div><div class="shield"><div class="shield-vents"></div><span>ESP32<br>WROOM-32</span><div class="antenna"></div></div><div class="chip"></div><div class="vreg"></div><div class="osc"></div><div class="usb"></div><div class="pinbtn pinbtn-en"></div><div class="pinbtn pinbtn-boot"></div><div class="led"></div><div class="res r1"></div><div class="res r2"></div></div></div>
       <div class="visual-readout"><small>GERAÇÃO ATUAL</small><strong id="visualPower">0 W</strong><span id="visualHint">Inicie a simulação para gerar energia</span></div>
     </div>
-    <div class="solar-legend"><span><i class="dot solar-dot"></i> LUZ SOLAR</span><span><i class="dot energy-dot"></i> FLUXO DE ENERGIA</span><span>ESCALA <b>0–1000 W</b></span></div>
+    <div class="weather-bar" id="conditionBar">
+      <div class="cond-group" data-for="solar">
+        <span>CONDIÇÃO CLIMÁTICA</span><div class="weather-buttons">
+          <button class="wbtn" data-condition="sunny">Ensolarado<small>800–1000 W</small></button>
+          <button class="wbtn" data-condition="partial">Parcialmente nublado<small>500–800 W</small></button>
+          <button class="wbtn" data-condition="cloudy">Nublado<small>200–500 W</small></button>
+          <button class="wbtn" data-condition="rain">Chuvoso<small>50–200 W</small></button>
+        </div>
+      </div>
+      <div class="cond-group" data-for="hydro" hidden>
+        <span>VAZÃO DE ÁGUA</span><div class="weather-buttons">
+          <button class="wbtn" data-condition="low">Vazão baixa<small>100–300 W</small></button>
+          <button class="wbtn" data-condition="medium">Vazão média<small>300–600 W</small></button>
+          <button class="wbtn" data-condition="high">Vazão alta<small>600–850 W</small></button>
+          <button class="wbtn" data-condition="flood">Cheia<small>850–1000 W</small></button>
+        </div>
+      </div>
+      <div class="cond-group" data-for="wind" hidden>
+        <span>INTENSIDADE DO VENTO</span><div class="weather-buttons">
+          <button class="wbtn" data-condition="calm">Vento calmo<small>50–250 W</small></button>
+          <button class="wbtn" data-condition="moderate">Vento moderado<small>250–550 W</small></button>
+          <button class="wbtn" data-condition="strong">Vento forte<small>550–850 W</small></button>
+          <button class="wbtn" data-condition="storm">Tempestade<small>850–1000 W</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="solar-legend"><span><i class="dot solar-dot"></i> <span id="legendSource">LUZ SOLAR</span></span><span><i class="dot energy-dot"></i> FLUXO DE ENERGIA</span><span>ESCALA <b>0–1000 W</b></span></div>
   </div>
 </section>
 <section class="section" id="dashboard"><div class="head"><div><small>MONITORAMENTO</small><h2>Dashboard <em>em tempo real.</em></h2></div><div class="controls"><button id="demo">Simulação</button><button id="pause">Pausar</button><button id="reset">Resetar</button></div></div><div class="banner"><i class="status-dot"></i> <b id="mode">SIMULAÇÃO</b> Os valores representam a leitura que poderá vir do ESP32. <strong>Meta: <span id="goal">0%</span></strong></div>
